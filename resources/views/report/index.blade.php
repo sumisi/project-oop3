@@ -1,33 +1,24 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <x-app-layout>
-    <body>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Список заявок') }}
+        </h2>
+    </x-slot>
     <h1 class="text-[40px]">Заявки</h1>
     <a href="/reports/create" class="text-[40px] text-red-500">Создать заявку</a>
     <div class="container mx-auto">
-        <div>
-            <h2>Фильтрация по новизне:</h2>
-            <span>
-                <a href="{{route('reports.index', ['sort' => 'desc', 'status' => $status])}}">Сначала новые</a>
-                <a href="{{route('reports.index', ['sort' => 'asc', 'status' => $status])}}">Сначала старные</a>
-            </span>
-        </div>
-        <div>
-            <h2>Фильтрация по по статусу:</h2>
-            <ul>
-                @foreach ($statuses as $status)
-                    <li>
-                        <a href="{{route('reports.index', ['sort' => $sort,'status' => $status->id])}}">{{$status->name}}</a>
-                    </li>
-                @endforeach
-            </ul>
-        </div> 
-            <div class="grid grid-cols-4 gap-2 place-items-center">
-                @foreach($reports as $report)
+        <x-filter :sort=$sort :status=$status></x-filter>
+        {{$reports->appends(request()->query())->links(  )}}
+        <div class="grid grid-cols-4 gap-2 place-items-center">
+            @foreach($reports as $report)
                 <div class="bg-amber-300 h-[300px] p-[10px] w-[300px]">
                     {{$report->number}}<br>
                     {{$report->des}}<br>
                     {{$report->created_at}}<br>
-                    {{$report->status->name}}<br>
+                    <x-status :type="$report->status->id">
+                        {{$report->status->name}}
+                    </x-status>
                     <a href="{{route('reports.edit', $report->id)}}">
                         Изменить заявку
                     </a><br>
@@ -37,9 +28,7 @@
                         <input type="submit" value="Удалить заявку" class="text-red-500 text-[20px] font-bold">
                     </form>
                 </div>
-                @endforeach
-            </div>
-            {{$reports->appends(request()->query())->links(  )}}
+            @endforeach 
         </div>
-    </body>
+    </div>
 </x-app-layout>
