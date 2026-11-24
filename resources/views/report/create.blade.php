@@ -13,10 +13,13 @@
                 <a href="/reports" class="block text-2xl sm:text-[40px] leading-tight text-red-500 mb-4 break-words">
                     Посмотреть заявки
                 </a>
-                <form action="{{ route('reports.store') }}" method="POST" class="flex flex-col items-start gap-3">
+                <form action="{{ route('reports.store') }}" method="POST" class="flex flex-col items-start gap-3" enctype="multipart/form-data">
                     @csrf
                     <input type="text" placeholder="Введите номер авто" required name="number" class="w-full sm:w-auto max-w-full box-border">
                     <textarea placeholder="Описание" required name="des" class="w-full sm:w-auto max-w-full box-border"></textarea>
+                    <label for="path_img" class="w-full sm:w-auto max-w-full box-border cursor-pointer" style="border: 1px solid black; padding: 8px 12px; background: white; display: inline-block;">
+                        <input type="file" id="path_img" name="path_img" required>
+                    </label>
                     <input type="submit" value="Создать" class="w-full sm:w-auto cursor-pointer">
                 </form>
             </div>

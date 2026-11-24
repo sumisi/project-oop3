@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report; 
 use App\Models\Status;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\Format;
 
 class ReportController extends Controller
 {
@@ -35,14 +38,32 @@ class ReportController extends Controller
 
     public function store(Request $request, Report $report)
     {
-        $data = $request -> validate([
+        $data = $request->validate([
             'number' => 'required|string',
-            'des' => 'required|string'
+            'des' => 'required|string',
+            'path_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $data ['user_id'] = Auth::user()->id;
-        $data ['status_id'] = 1; 
+
+        $file = $request->file('path_img');
+
+        
+        $img = Image::decode($file);
+        $img->scaleDown(width: 400);
+
+        $encoded = $img->encodeUsingFormat(Format::WEBP, quality: 80);
+
+        $imagPath = 'reports/' . time() . '.webp';
+        Storage::disk('public')->put($imagPath, $encoded->toString());
+
+        $data['path_img'] = $imagPath;
+        $data['user_id'] = Auth::id();
+        $data['status_id'] = 1;
+
         $report->create($data);
+
+
         return redirect()->route('reports.index')->with('info', "Заявление отправлено");
+
     }
 
     public function edit(Report $report)

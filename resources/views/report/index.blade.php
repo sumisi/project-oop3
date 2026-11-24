@@ -24,6 +24,9 @@
                             <x-status :type="$report->status->id">
                                 {{$report->status->name}}
                             </x-status>
+                            @isset($report->path_img)
+                                <img src="{{ Storage::url($report->path_img) }}" class="contact-block__img w-full max-w-full h-[120px] object-cover rounded mt-2"  alt="ДА">
+                            @endisset
                             <a href="{{route('reports.edit', $report->id)}}">
                                 Изменить заявку
                             </a><br>
