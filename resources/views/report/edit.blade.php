@@ -1,17 +1,20 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 <x-app-layout>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5">
-                    <a href="/reports" class="text-[40px] text-red-500">Посмотреть заявки</a>
-                    <form action="{{route('reports.update', $report->id)}}" method = "POST">
-                        @csrf
-                        @method('put')
-                        <input type="text" placeholder="Введите номер авто" required name="number" value="{{$report->number}}"><br>
-                        <textarea placeholder="Описание" required name="des">{{$report->des}}</textarea><br>
-                        <input type="submit" value="Обновить">
-                    </form>
-                </div>
+    <div class="py-6 sm:py-12">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4 sm:p-5">
+                <a href="/reports" class="block text-2xl sm:text-[40px] leading-tight text-red-500 mb-4 break-words">
+                    Посмотреть заявки
+                </a>
+                <form action="{{ route('reports.update', $report->id) }}" method="POST" class="flex flex-col items-start gap-3">
+                    @csrf
+                    @method('put')
+                    <input type="text" placeholder="Введите номер авто" required name="number" value="{{ $report->number }}" class="w-full sm:w-auto max-w-full box-border">
+                    <textarea placeholder="Описание" required name="des" class="w-full sm:w-auto max-w-full box-border">{{ $report->des }}</textarea>
+                    <input type="submit" value="Обновить" class="w-full sm:w-auto cursor-pointer">
+                </form>
             </div>
         </div>
+    </div>
 </x-app-layout>

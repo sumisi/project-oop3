@@ -10,6 +10,7 @@
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-3 sm:p-5">
                 <h1 class="text-2xl sm:text-[40px]">Заявки</h1>
+                @include('layouts.flash-messages')
                 <a href="/reports/create" class="text-2xl sm:text-[40px] text-red-500 block sm:inline">Создать заявку</a>
                 <div class="overflow-x-auto">
                     <x-filter :sort=$sort :status=$status></x-filter>
@@ -19,7 +20,7 @@
                         <div class="bg-amber-300 min-h-[300px] sm:h-[300px] p-[10px] w-full sm:w-[250px] break-words">
                             {{$report->number}}<br>
                             {{$report->des}}<br>
-                            {{$report->created_at}}<br>
+                            {{\Carbon\Carbon::parse($report->created_at)->translatedFormat('j F Y h:i');}}<br>
                             <x-status :type="$report->status->id">
                                 {{$report->status->name}}
                             </x-status>

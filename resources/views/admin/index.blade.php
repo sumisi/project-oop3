@@ -3,6 +3,7 @@
 <x-app-layout>
         <div class="mb-4">
             <h1 class="font-bold text-red-500">Административная панель</h1>
+            @include('layouts.flash-messages')
         </div>
         <div class="w-full overflow-x-auto">
             <table class="w-full border-collapse text-left">

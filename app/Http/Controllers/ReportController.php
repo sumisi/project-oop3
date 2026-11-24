@@ -42,7 +42,7 @@ class ReportController extends Controller
         $data ['user_id'] = Auth::user()->id;
         $data ['status_id'] = 1; 
         $report->create($data);
-        return redirect()->route('reports.index');
+        return redirect()->route('reports.index')->with('info', "Заявление отправлено");
     }
 
     public function edit(Report $report)
@@ -63,7 +63,7 @@ class ReportController extends Controller
             'des' => 'required|string'
         ]);
         $report->update($data);
-        return redirect()->route('reports.index');
+        return redirect()->route('reports.index')->with('info', "Заявка изменена");
     }
 
     public function destroy(Report $report)
@@ -71,7 +71,7 @@ class ReportController extends Controller
         if(Auth::user()->id === $report->user_id)
             { 
                 $report->delete();
-                return redirect()->back();
+                return redirect()->back()->with('info', "Заявление удалено");
             }
         else{
             abort(403, "У вас нет доступа для удаления этой заявки");
@@ -84,6 +84,6 @@ class ReportController extends Controller
             'status_id' => 'required|exists:statuses,id'
         ]);
         $report->update($request->only(['status_id']));
-        return redirect()->back();
+        return redirect()->back()->with('info', "Статус изменен");
     }
 }
